@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:quotes_app/helpers/database_helper.dart';
+import 'package:quotes_app/contollers/helpers/database_helper.dart';
 import 'package:quotes_app/models/quote_model.dart';
 
 class FavoriteScreen extends StatelessWidget {

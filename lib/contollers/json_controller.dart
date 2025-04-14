@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:quotes_app/helpers/database_helper.dart';
+import 'package:quotes_app/contollers/helpers/database_helper.dart';
 import 'package:quotes_app/models/quote_model.dart';
 
 Future<void> loadQuotesFromJson() async {

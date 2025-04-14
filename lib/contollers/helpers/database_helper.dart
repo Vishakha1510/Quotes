@@ -42,22 +42,6 @@ class DbHelper {
     return quoteList.map((e) => QuoteModel.fromJson(e)).toList();
   }
 
-  Future<List<QuoteModel>> fetchQuotesByCategory(String category) async {
-    await initDB();
-    List<Map<String, dynamic>> filteredQuotes = await db!.query(
-      'quotes',
-      where: 'category = ?',
-      whereArgs: [category],
-    );
-
-    return filteredQuotes.map((e) => QuoteModel.fromJson(e)).toList();
-  }
-
-  Future<int> deleteQuote(int id) async {
-    await initDB();
-    return await db!.delete('quotes', where: 'id = ?', whereArgs: [id]);
-  }
-
   Future<int> toggleFavorite(int id, int newValue) async {
     await initDB();
     return await db!.update(
@@ -68,6 +52,17 @@ class DbHelper {
     );
   }
 
+  Future<int> deleteQuote({required int id}) async {
+    await initDB();
+    String query = "DELETE FROM quotes WHERE id=?;";
+
+    List args = [id];
+
+    int res = await db!.rawDelete(query, args);
+
+    return res;
+  }
+
   Future<List<QuoteModel>> fetchFavorites() async {
     await initDB();
     List<Map<String, dynamic>> favorites = await db!.query(
@@ -76,5 +71,14 @@ class DbHelper {
       whereArgs: [1],
     );
     return favorites.map((e) => QuoteModel.fromJson(e)).toList();
+  }
+
+  Future<List<QuoteModel>> searchQuotes({required String category}) async {
+    await initDB();
+    String query = "SELECT * FROM quotes WHERE category LIKE ?";
+    List<Map<String, dynamic>> searchedQuotes = await db!.rawQuery(query, [
+      '%$category%',
+    ]);
+    return searchedQuotes.map((e) => QuoteModel.fromJson(e)).toList();
   }
 }
